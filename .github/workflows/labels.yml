@@ -53,51 +53,6 @@ jobs:
               });
             }
  
-      - name: Sync GSoC status label
-        if: >
-          github.event_name == 'pull_request_target' &&
-          contains(fromJSON('["opened","ready_for_review","converted_to_draft","review_requested"]'), github.event.action)
-        uses: actions/github-script@v9
-        with:
-          script: |
-            const gsocLabels = [
-              "GSoC: Not ready",
-              "GSoC: Ready for review!",
-              "GSoC: Needs peer review",
-            ];
-            const pr = context.payload.pull_request;
-            const action = context.payload.action;
- 
-            let target;
-            if (action === "review_requested") {
-              target = "GSoC: Needs peer review";
-            } else if (action === "converted_to_draft" || pr.draft) {
-              target = "GSoC: Not ready";
-            } else {
-              target = "GSoC: Ready for review!";
-            }
- 
-            const current = pr.labels.map(l => l.name);
-            const toRemove = gsocLabels.filter(l => l !== target && current.includes(l));
- 
-            for (const name of toRemove) {
-              await github.rest.issues.removeLabel({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: pr.number,
-                name,
-              }).catch(() => {});
-            }
- 
-            if (!current.includes(target)) {
-              await github.rest.issues.addLabels({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: pr.number,
-                labels: [target],
-              });
-            }
- 
       - name: Label issue by keywords
         if: github.event_name == 'issues'
         uses: actions/github-script@v9
