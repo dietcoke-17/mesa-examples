@@ -6,11 +6,11 @@ In this model, each dead cell will become alive if it has exactly one neighbor. 
 
 
 ## How to Run
- 
+
 ```bash
 solara run app.py
 ```
- 
+
 ## Files
 
 * ``hex_snowflake/cell.py``: Defines the behavior of an individual cell, which can be in two states: DEAD or ALIVE.
