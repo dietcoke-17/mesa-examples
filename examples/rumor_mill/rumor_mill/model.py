@@ -116,7 +116,7 @@ class RumorMillModel(Model):
             if self.number_of_agents > 0
             else 0
         )
-    
+
     def compute_recovered_ratio(self):
         """Calculate percentage of agents who forgot the rumor this step."""
         recovered = sum(1 for agent in self.agents if agent.just_recovered)

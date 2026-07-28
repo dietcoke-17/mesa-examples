@@ -6,7 +6,9 @@ class Person(CellAgent):
     A person agent that can know and spread a rumor.
     """
 
-    def __init__(self, model, cell, rumor_spread_chance=0.5, recovery_rate=0.0, color=None):
+    def __init__(
+        self, model, cell, rumor_spread_chance=0.5, recovery_rate=0.0, color=None
+    ):
         """
         Initialize a Person agent.
 
@@ -32,22 +34,20 @@ class Person(CellAgent):
         Agent behavior each step: if knows rumor, tell a random neighbor.
         """
         if not self.knows_rumor:
-             return
+            return
         # Chance to forget the rumor and become uninformed again
         if self.random.random() < self.recovery_rate:
             self.knows_rumor = False
             self.just_recovered = True
             return
 
-        neighbors = [
-           agent for agent in self.cell.neighborhood.agents if agent != self
-        ]
+        neighbors = [agent for agent in self.cell.neighborhood.agents if agent != self]
         if neighbors:
-           neighbor = self.random.choice(neighbors)
-           if (
-               not neighbor.knows_rumor
-               and self.random.random() < self.rumor_spread_chance
-           ):
+            neighbor = self.random.choice(neighbors)
+            if (
+                not neighbor.knows_rumor
+                and self.random.random() < self.rumor_spread_chance
+            ):
                 neighbor.knows_rumor = True
                 neighbor.newly_learned = True
         neighbor.times_heard += 1
