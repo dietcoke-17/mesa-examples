@@ -1,19 +1,19 @@
 name: Label Automation
- 
+
 on:
   pull_request_target:
     types: [opened, synchronize, reopened, ready_for_review, converted_to_draft, review_requested]
   issues:
     types: [opened, edited, reopened]
- 
+
 permissions:
   contents: read
   pull-requests: write
   issues: write
- 
+
 jobs:
   label:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-lates
     steps:
       - name: Label PR by changed files
         if: >
@@ -23,7 +23,7 @@ jobs:
         with:
           script: |
             const pr = context.payload.pull_request;
- 
+
             // label -> test(filename): edit/add rules here
             const pathRules = [
               { label: "gis", test: f => f.startsWith("gis/") },
@@ -31,7 +31,7 @@ jobs:
               { label: "enhancement", test: f =>
                   (f.startsWith("examples/") || f.startsWith("mesa_models/")) && f.endsWith(".py") },
             ];
- 
+
             const files = await github.paginate(github.rest.pulls.listFiles, {
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -39,11 +39,11 @@ jobs:
               per_page: 100,
             });
             const paths = files.map(f => f.filename);
- 
+
             const toAdd = pathRules
               .filter(rule => paths.some(rule.test))
               .map(rule => rule.label);
- 
+
             if (toAdd.length) {
               await github.rest.issues.addLabels({
                 owner: context.repo.owner,
@@ -52,7 +52,7 @@ jobs:
                 labels: toAdd,
               });
             }
- 
+
       - name: Label issue by keywords
         if: github.event_name == 'issues'
         uses: actions/github-script@v9
@@ -60,7 +60,7 @@ jobs:
           script: |
             const issue = context.payload.issue;
             const text = `${issue.title}\n${issue.body || ""}`;
- 
+
             // label -> regex: edit/add rules here
             const issueRules = [
               { label: "gis", pattern: /\bgis\b|geoagent|geospace|geopandas|shapefile|mesa[- ]?geo/i },
@@ -70,11 +70,11 @@ jobs:
               { label: "enhancement", pattern: /\bfeature request\b|\benhancement\b|would be (nice|great) if/i },
               { label: "good first issue", pattern: /good first issue|beginner[- ]friendly|easy fix/i },
             ];
- 
+
             const toAdd = issueRules
               .filter(rule => rule.pattern.test(text))
               .map(rule => rule.label);
- 
+
             if (toAdd.length) {
               await github.rest.issues.addLabels({
                 owner: context.repo.owner,
