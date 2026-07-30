@@ -80,6 +80,7 @@ def test_model_runs_with_defaults():
     model.run_for(10)
     assert model.time == 10.0
 
+
 def test_recovered_agents_are_not_double_counted_as_new():
     """An agent that forgets and is later re-told the rumor must not be
     counted again by New_People_Knowing_Rumor -- only genuine first-time
@@ -104,6 +105,7 @@ def test_recovered_agents_are_not_double_counted_as_new():
         )
 
     assert cumulative_new_learners <= never_informed_at_start
+
 
 def test_no_crash_with_empty_neighborhood():
     """A 1x1 grid has no neighbors at all; stepping an informed agent must

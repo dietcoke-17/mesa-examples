@@ -44,9 +44,7 @@ class Person(CellAgent):
             return
 
         # Get all neighbors in the cell's neighborhood (excluding self)
-        neighbors = [
-            agent for agent in self.cell.neighborhood.agents if agent != self
-        ]
+        neighbors = [agent for agent in self.cell.neighborhood.agents if agent != self]
         if neighbors:
             # Randomly select one neighbor to tell
             neighbor = self.random.choice(neighbors)
