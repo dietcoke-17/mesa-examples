@@ -79,3 +79,37 @@ def test_model_runs_with_defaults():
     model = RumorMillModel()
     model.run_for(10)
     assert model.time == 10.0
+
+def test_recovered_agents_are_not_double_counted_as_new():
+    """An agent that forgets and is later re-told the rumor must not be
+    counted again by New_People_Knowing_Rumor -- only genuine first-time
+    learners should ever count toward that metric."""
+    model = RumorMillModel(
+        width=8,
+        height=8,
+        know_rumor_ratio=0.2,
+        rumor_spread_chance=0.6,
+        recovery_rate=0.3,
+        rng=3,
+    )
+    never_informed_at_start = sum(1 for a in model.agents if not a.knows_rumor)
+
+    cumulative_new_learners = 0
+    for _ in range(200):
+        model.step()
+        cumulative_new_learners += (
+            model.compute_new_people_ratio_knowing_rumor()
+            / 100
+            * model.number_of_agents
+        )
+
+    assert cumulative_new_learners <= never_informed_at_start
+
+def test_no_crash_with_empty_neighborhood():
+    """A 1x1 grid has no neighbors at all; stepping an informed agent must
+    not raise (guards against referencing an unassigned neighbor)."""
+    model = RumorMillModel(
+        width=1, height=1, know_rumor_ratio=1.0, rumor_spread_chance=1.0, rng=1
+    )
+    for _ in range(5):
+        model.step()

@@ -70,6 +70,7 @@ class RumorMillModel(Model):
                 agent.knows_rumor = True
                 agent.times_heard = 1
                 agent.newly_learned = True  # They learned it initially
+                agent.has_known_rumor_before = True
 
         # Set up data collection
         self.datacollector = mesa.DataCollector(
