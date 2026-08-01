@@ -1,5 +1,4 @@
 import mesa
-import numpy as np
 from mesa.discrete_space import HexGrid
 
 try:
@@ -105,7 +104,7 @@ class AntForaging(mesa.Model):
         """
         Apply evaporation to a pheromone layer.
         """
-        np_layer = np.asarray(getattr(self.grid, layer_name).data)
+        np_layer = getattr(self.grid, layer_name).data
         np_layer *= 1.0 - self.evaporation_rate
 
         # Clamp to 0 to prevent negative values
