@@ -16,9 +16,9 @@ class RumorMillModel(Model):
         height=10,
         know_rumor_ratio=0.01,
         rumor_spread_chance=0.5,
-        recovery_rate=0.0,
         eight_neightborhood=False,
         rng=None,
+        recovery_rate=0.0,
     ):
         """
         Initialize the Rumor Mill model.

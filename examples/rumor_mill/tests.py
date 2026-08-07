@@ -115,3 +115,23 @@ def test_no_crash_with_empty_neighborhood():
     )
     for _ in range(5):
         model.step()
+
+
+def test_positional_arguments_stay_backward_compatible():
+    """recovery_rate must be appended at the end of the signature, not
+    inserted in the middle -- otherwise existing positional calls like
+    RumorMillModel(10, 10, 0.1, 0.5, True, 1) would silently reinterpret
+    True as recovery_rate and 1 as eight_neightborhood, and drop rng
+    entirely."""
+    model = RumorMillModel(10, 10, 0.1, 0.5, True, 1)
+
+    assert model.number_of_agents == 100
+    assert model.know_rumor_ratio == 0.1
+    assert model.rumor_spread_chance == 0.5
+    assert model.recovery_rate == 0.0  # untouched by the trailing True/1
+
+    # rng=1 must still actually seed the model (not get silently dropped)
+    other = RumorMillModel(10, 10, 0.1, 0.5, True, 1)
+    assert [model.random.random() for _ in range(5)] == [
+        other.random.random() for _ in range(5)
+    ]

@@ -7,7 +7,7 @@ class Person(CellAgent):
     """
 
     def __init__(
-        self, model, cell, rumor_spread_chance=0.5, recovery_rate=0.0, color=None
+        self, model, cell, rumor_spread_chance=0.5, color=None, recovery_rate=0.0
     ):
         """
         Initialize a Person agent.
