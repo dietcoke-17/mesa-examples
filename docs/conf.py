@@ -112,9 +112,7 @@ def write_example_page(category, example_name, readme_path):
     out_path = osp.join(out_dir, f"{example_name}.md")
 
     rel_readme = osp.relpath(readme_path, start=out_dir).replace(os.sep, "/")
-    rel_dir = osp.relpath(osp.dirname(readme_path), start=out_dir).replace(
-        os.sep, "/"
-    )
+    rel_dir = osp.relpath(osp.dirname(readme_path), start=out_dir).replace(os.sep, "/")
 
     content = (
         f"# {display_name(example_name)}\n\n"
