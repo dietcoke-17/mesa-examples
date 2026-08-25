@@ -32,6 +32,12 @@ rl_example = [
     "mesa",
     "tensorboard"
 ]
+docs = [
+    "sphinx",
+    "myst-parser",
+    "pydata-sphinx-theme",
+    "sphinx-copybutton",
+]
 
 [tool.ruff]
 extend-include = ["*.ipynb"]
